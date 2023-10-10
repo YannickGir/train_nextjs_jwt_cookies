@@ -1,6 +1,7 @@
 const router = require('express').Router();
 const UserModel = require ('../models/shemas');
 const bcrypt = require('bcrypt')
+const jwt = require("jsonwebtoken")
 
 router.post('/register', async(req,res)=>{
     const salt = await bcrypt.genSalt(6);
@@ -39,7 +40,13 @@ router.post('/login', async(req, res) =>{
     }
     
     if (await bcrypt.compare(req.body.password, data.password)) {
-        return res.status(200).send({ message: "Login successful" });
+        const token = jwt.sign({_id:data._id}, "secret")
+        res.cookie('jwt', token, {
+            httpOnly: true,
+            path: '/',
+            maxAge: 24*60*60*1000
+        })
+        return res.status(200).send({ message: "Login successful", token });
     } else {
         return res.status(400).send({ message: "Invalid credentials..." });
     }
