@@ -1,7 +1,13 @@
 const router = require('express').Router();
 const UserModel = require ('../models/shemas');
-router.get('/', (req,res)=>{
-    res.send('Hello')
+
+router.post('/register', (req,res)=>{
+    const user = new UserModel(
+        {name: req.body.name,
+        age: req.body.age,
+        email: req.body.email,
+        password: req.body.password}
+        )
 })
 
 router.get('/getUsers', async (req, res) => {
