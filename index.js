@@ -11,10 +11,10 @@ async function main() {
         useNewUrlParser: true,
         useUnifiedTopology: true,
     });
-    app = express()
+    const app = express()
+    app.use(express.json())
 
-
-    app.use(routes)
+    app.use('/api', routes)
     app.listen(8080, ()=> {
         console.log('connected to server !!')
     })
