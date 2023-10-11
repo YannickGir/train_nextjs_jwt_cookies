@@ -1,6 +1,7 @@
 const express = require('express');
 const mongoose = require('mongoose')
 const dotenv = require("dotenv");
+const cors = require('cors');
 
 const routes = require('./routes/routes')
 dotenv.config();
@@ -13,8 +14,12 @@ async function main() {
     });
     const app = express()
     app.use(express.json())
-
+    app.use(cors({
+        credentials: true,
+        origin:['http://localhost:3000', 'http://localhost:8080']
+    }))
     app.use('/api', routes)
+
     app.listen(8080, ()=> {
         console.log('connected to server !!')
     })
